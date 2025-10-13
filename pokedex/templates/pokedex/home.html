@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{page_title}}</title>
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #0f380f;
+            background-image:
+            repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px, 
+                transparent 1px, 
+                transparent 2px);
+            margin: 0;
+            padding: 20px;
+            color: #9bbc0f;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            text-shadow: 3px 3px 0px #0f380f;
+            margin-bottom: 30px;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1;}
+            50%, 100% { opacity: 0.7;}
+        }
+
+        .pokemon-grid {
+            display: grid;
+            gap: 15px;
+            padding: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+
+        .pokemon-card {
+            background-color: #8bac0f;
+            border: 4px solid #306230;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.1s;
+            box-shadow: 4px 4px 0px #0f380f;
+        }
+
+        .pokemon-card:hover {
+            background-color: #9bbc0f;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #0f380f;
+        }
+
+        
+
+        .pokemon-card:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #0f380f;
+        }
+
+        .pokemon-card.playing {
+            background-color: #9bbc0f;
+            animation: flash 0.3s;
+        }
+
+        @keyframes flash {
+            0%, 100% {background-color: #9bbc0f;}
+            50% {background-color: #306230;}
+
+        }
+
+        .pokemon-number {
+            font-size: 10px;
+            margin-bottom: 5px;
+            color: #0f380f;
+        }
+
+        .pokemon-name {
+            font-size: 12px;
+            margin: 10px 0;
+            color: #0f380f;
+            word-wrap: break-word;
+        }
+
+        .pokemon-image {
+            width: 96px;
+            height: 96px;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            filter: contrast(1.1);
+        }
+
+        .stat-display {
+            font: 8px;
+            margin-top: 8px;
+            color: #306230;
+            background-color: #0f380f;
+            padding: 5px;
+            border: 2px solid #306230;
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 14px;
+            padding: 40px;
+            animation: blink 1s infinite;
+        }
+
+        .container::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0,0,0,0.15),
+                rgba(0,0,0,0.15) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            text-align: center;
+        }
+
+        .search-container form {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #8bac0f;
+            border: 4px solid #306230;
+            padding: 12px;
+            color: #0f380f;
+            font-size: 10px;
+            flex: 1;
+            min-width: 200px;
+            box-shadow: 4px 4px 0px #0f380f;
+        }
+
+        .search-input::placeholder {
+            color: #306230;
+        }
+
+        .search-input:focus {
+            outline: none;
+            background-color: #9bbc0f;
+        }
+
+        .search-button {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #306230;
+            border: 4px solid #0f380f;
+            padding: 12px 20px;
+            color: #9bbc0f;
+            font-size: 10px;
+            cursor: pointer;
+            box-shadow: 4px 4px 0px #0f380f;
+        }
+
+        .search-button:hover {
+            background-color: #0f380f;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #0f380f;
+        }
+
+        .search-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #0f380f;
+        }
+
+        .clear-button {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #8bac0f;
+            border: 4px solid #306230;
+            padding: 12px 20px;
+            color: #0f380f;
+            font-size: 10px;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 4px 4px 0px #0f380f;
+        }
+
+        .clear-button:hover {
+            background-color: #9bbc0f;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #0f380f;
+        }
+
+        .clear-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #0f380f;
+        }
+
+        .type-badges {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin-top: 8px;
+        }
+
+        .type-badge {
+            font-size: 8px;
+            padding: 4px 8px;
+            border: 2px solid #0f380f;
+            text-transform: uppercase;
+            font-weight: bold;
+            box-shadow: 2px 2px 0px #0f380f;
+        }
+
+        .type-normal { background-color: #A8A878; color: #000; }
+        .type-fire { background-color: #F08030; color: #fff; }
+        .type-water { background-color: #6890F0; color: #fff; }
+        .type-electric { background-color: #F8D030; color: #000; }
+        .type-grass { background-color: #78C850; color: #000; }
+        .type-ice { background-color: #98D8D8; color: #000; }
+        .type-fighting { background-color: #C03028; color: #fff; }
+        .type-poison { background-color: #A040A0; color: #fff; }
+        .type-ground { background-color: #E0C068; color: #000; }
+        .type-flying { background-color: #A890F0; color: #fff; }
+        .type-psychic { background-color: #F85888; color: #fff; }
+        .type-bug { background-color: #A8B820; color: #fff; }
+        .type-rock { background-color: #B8A038; color: #fff; }
+        .type-ghost { background-color: #705898; color: #fff; }
+        .type-dragon { background-color: #7038F8; color: #fff; }
+        .type-dark { background-color: #705848; color: #fff; }
+        .type-steel { background-color: #B8B8D0; color: #000; }
+        .type-fairy { background-color: #EE99AC; color: #000; }
+
+    </style>
+    
+</head>
+
+<body>
+    <div class="container">
+        <h1>◆ POKEDEX ◆</h1>
+
+        <div class="search-container">
+            <form method="GET" action="{% url 'home' %}">
+                <input type="text" name="search" placeholder="SEARCH" value=" {{search_query}}" class="search-input">
+                <button type="submit" class="search-button">SEARCH</button>
+                {% if search_query %}
+                <a href="{% url 'home' %}" class="clear-button">CLEAR</a>
+                {% endif %}
+            </form>
+        </div>
+
+        {% if pokemon_list %}
+
+        <div class="pokemon-grid">
+            {% for pokemon in pokemon_list %}
+            <div class="pokemon-card" onclick="playCry({{ pokemon.id }}, this)">
+                <div class="pokemon-number">No. {{pokemon.id|stringformat:"03d"}} </div>
+                <img src="{{pokemon.image}}" alt="{{pokemon.name}}" class="pokemon-image">
+                <div class="pokemon-name">{{pokemon.name|upper}}</div>
+
+                <div class="type-badges">
+                    {% if pokemon.type1 %}
+                    <span class="type-badge type-{{ pokemon.type1 }}">{{ pokemon.type1 }} </span>
+                    {% endif %}
+                    {% if pokemon.type2 %}
+                    <span class="type-badge type-{{ pokemon.type2 }}">{{ pokemon.type2 }}
+                    {% endif %}
+
+                    
+
+                    </span>
+                </div>
+
+                <div class="stat-display">HP: {{pokemon.stats.hp}}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            ▶ LOADING POKEMON DATA...
+        {% endif %}
+    </div>
+
+    <script>
+        
+
+        function playCry(pokemonId, cardElement) {
+            window.location.href = `/pokemon/${pokemonId}/`
+            
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{page_title}}</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #0f380f;
+            background-image: 
+            repeating-linear-gradient(
+                0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px transparent 2px
+            );
+            margin: 0;
+            padding: 20px;
+            color: #9bbc0f;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            font-size: 10px;
+            display: inline-block;
+            background-color: #8bac0f;
+            border: 4px solid #306230;
+            padding: 10px 20px;
+            color: #0f380f;
+            text-decoration: none;
+            margin-bottom: 20px;
+            box-shadow: 4px 4px 0px #0f380f;
+        }
+
+        .back-button:hover {
+            background-color: #9bbc0f;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #0f380f;
+        }
+        .back-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #0f380f;
+        }
+
+        .detail-card {
+            background-color: #8bac0f;
+            border: 4px solid #306230;
+            padding: 30px;
+            box-shadow: 4px 4px 0px #0f380f;
+        }
+
+        .pokemon-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .pokemon-number {
+            font-size: 12px;
+            color: #0f380f;
+            margin-bottom: 10px;
+        }
+
+        .pokemon-name {
+            font-size: 24px;
+            color: #0f380f;
+            margin: 10px 0;
+        }
+
+        .pokemon-image {
+            width: 200px;
+            height: 200px;
+
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            filter: contrast(1.1);
+        }
+
+        .info-section {
+            background-color: #0f380f;
+            border: 4px solid #306230;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .info-title {
+            font-size: 14px;
+            color: #9bbc0f;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #306230;
+            padding-bottom: 10px;
+
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 10px;
+            border-bottom: 1px solid #306230;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #8bac0f;
+        }
+
+        .info-value {
+            color: #9bbc0f;
+        }
+
+        .stat-bar-container {
+            background-color: #306230;
+            height: 20px;
+            margin-top: 5px;
+            border: 2px solid #0f380f;
+        }
+
+        .stat-bar {
+            background-color: #9bbc0f;
+            height: 100%;
+            transition: width 0.5s, background-color 0.5s;
+            max-width: 100%;
+        }
+
+        .stat-bar.high-stat {
+            background-color: #ee0404 !important;
+        }
+
+        .stat-bar.extreme-stat {
+            background-color: #6c1bee !important;
+        }
+
+        .play-cry-button {
+            display: block;
+            width: 100%;
+            background-color: #306230;
+            border: 4px solid #0f380f;
+            padding: 15px;
+            color: #9bbc0f;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 4px 4px 0px #0f380f;
+        }
+
+        .play-cry-button:hover {
+            background-color: #0f380f;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #0f380f;
+        }
+
+        .play-cry-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #0f380f;
+        }
+
+        .error {
+            text-align: center;
+            padding: 40px;
+            font-size: 15px;
+        }
+
+        .container::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 3px
+            );
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .type-badges {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin-top: 8px;
+        }
+
+        .type-badge {
+            font-size: 8px;
+            padding: 4px 8px;
+            border: 2px solid #0f380f;
+            text-transform: uppercase;
+            font-weight: bold;
+            box-shadow: 2px 2px 0px #0f380f;
+        }
+
+        .type-normal { background-color: #A8A878; color: #000; }
+        .type-fire { background-color: #F08030; color: #fff; }
+        .type-water { background-color: #6890F0; color: #fff; }
+        .type-electric { background-color: #F8D030; color: #000; }
+        .type-grass { background-color: #78C850; color: #000; }
+        .type-ice { background-color: #98D8D8; color: #000; }
+        .type-fighting { background-color: #C03028; color: #fff; }
+        .type-poison { background-color: #A040A0; color: #fff; }
+        .type-ground { background-color: #E0C068; color: #000; }
+        .type-flying { background-color: #A890F0; color: #fff; }
+        .type-psychic { background-color: #F85888; color: #fff; }
+        .type-bug { background-color: #A8B820; color: #fff; }
+        .type-rock { background-color: #B8A038; color: #fff; }
+        .type-ghost { background-color: #705898; color: #fff; }
+        .type-dragon { background-color: #7038F8; color: #fff; }
+        .type-dark { background-color: #705848; color: #fff; }
+        .type-steel { background-color: #B8B8D0; color: #000; }
+        .type-fairy { background-color: #EE99AC; color: #000; }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nav-button {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            background-color: #8bac0f;
+            border: 4px solid #306230;
+            padding: 10px 15px;
+            color: #0f380f;
+            text-decoration: none;
+            box-shadow: 4px 4px 0px #0f380f;
+            display: inline-block;
+            flex: 1;
+            text-align: center;
+        }
+
+        .nav-button:hover {
+            background-color: #9bbc0f;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #0f380f;
+        }
+
+        .nav-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #0f380f;
+        }
+
+        .nav-button.disabled {
+            background-color: #306230;
+            color: #0f380f;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .nav-button.disabled:hover {
+            transform: none;
+            box-shadow: 4px 4px 0px #0f380f;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="{% url 'home' %}" class="back-button">◀ BACK TO POKEDEX</a>
+
+        <div class="navigation-buttons">
+            {% if prev_pokemon %}
+            <a href="{% url 'pokemon_detail' prev_pokemon %}" class="nav-button">PREVIOUS</a>
+            {% else %}
+            <span class="nav-button disabled">PREVIOUS</span>
+            {% endif %}
+
+            {% if next_pokemon %}
+            <a href="{% url 'pokemon_detail' next_pokemon %}" class="nav-button">NEXT</a>
+            {% else %}
+            <span class="nav-button disabled">NEXT</span>
+            {% endif %}
+        </div>
+
+        {% if pokemon %}
+
+        <div class="detail-card">
+            <div class="pokemon-header">
+                <div class="pokemon-number">No. {{pokemon_id|stringformat:"03d"}}</div>
+                <div class="pokemon-name"> {{pokemon.name|upper}}</div>
+
+                <div class="type-badges" style="margin-bottom: 15px;">
+                    {% if pokemon.type1 %}
+                    <span class="type-badge type-{{ pokemon.type1 }}">{{ pokemon.type1 }}</span>
+                    {% endif %}
+                    {% if pokemon.type2 %}
+                    <span class="type-badge type-{{ pokemon.type2 }}">{{ pokemon.type2 }}</span>
+                    {% endif %}
+
+                </div>
+
+                <img src="{{pokemon.image}}" alt="{{pokemon.name}}" class="pokemon-image">
+            </div>
+
+            <div class="info-section">
+                <div class="info-title">▶ BASIC INFO</div>
+                <div class="info-row">
+                    <span class="info-label">HEIGHT:</span>
+                    <span class="info-value">{{pokemon.height}} dm</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">WEIGHT:</span>
+                    <span class="info-value">{{pokemon.weight}} hg</span>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <div class="info-title">▶ BASE STATS</div>
+                {% for stat_name, stat_value in pokemon.stats.items %}
+
+                <div class="info-row">
+                    <span class="info-label">{{stat_name|upper}}:</span>
+                    <span class="info-value">{{stat_value}}</span>
+                </div>
+
+                <div class="stat-bar-container">
+                    <div class="stat-bar {% if stat_value > 150 %}extreme-stat{% elif stat_value > 100 %}high-stat{% endif %}" 
+                        style="width: {% if stat_value > 100 %}100 {% else %}{{stat_value}}{% endif %}%;">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <button class="play-cry-button" onclick="playCry({{pokemon_id}})">♪ PLAY CRY</button>
+
+        </div>
+        {% else %}
+        <div class="error">ERROR: POKEMON NOT FOUND</div>
+        <a href="{% url 'home' %}" class="back-button">RETURN TO POKEDEX</a>
+        </div>
+        {% endif%}
+
+<script>
+        function playCry(pokemonId) {
+        const audio = new Audio(`https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${pokemonId}.ogg`);
+        audio.volume = 0.25;
+        audio.play().catch(err => {
+            console.log('Could not play sound!', err);
+        });
+    }
+
+        {% if pokemon %}
+        window.addEventListener('DOMContentLoaded', function() {
+            playCry({{ pokemon_id }});
+        });
+        {% endif %}
+</script>
+        
+    
+    
+</body>
+</html>
