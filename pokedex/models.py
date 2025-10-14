@@ -8,6 +8,7 @@ class Pokemon(models.Model):
     height = models.IntegerField()
     weight = models.IntegerField()
     image_url = models.URLField()
+    shiny_image_url = models.URLField(blank=True, null=True)
 
     type1 = models.CharField(max_length=20, blank=True)
     type2 = models.CharField(max_length=20, blank=True, null=True)

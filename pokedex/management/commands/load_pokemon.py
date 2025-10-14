@@ -2,8 +2,6 @@ from django.core.management.base import BaseCommand
 from pokedex.models import Pokemon
 from pokedex.utils import fetch_pokemon_data
 
-
-
 class Command(BaseCommand):
     help = 'Loading all 151 Pokemon into database using PokeAPI'
 
@@ -27,14 +25,16 @@ class Command(BaseCommand):
                         'height': pokemon_data['height'],
                         'weight': pokemon_data['weight'],
                         'image_url': pokemon_data['image'],
+                        'shiny_image_url': pokemon_data.get('shiny_image', ''),
+                        'type1': pokemon_data['type1'],
+                        'type2': pokemon_data['type2'],
                         'hp': pokemon_data['stats'].get('hp', 0),
                         'attack': pokemon_data['stats'].get('attack',0),
                         'defense': pokemon_data['stats'].get('defense', 0),
                         'special_attack': pokemon_data['stats'].get('special-attack', 0),
                         'special_defense': pokemon_data['stats'].get('special-defense', 0),
                         'speed': pokemon_data['stats'].get('speed', 0),
-                        'type1': pokemon_data['type1'],
-                        'type2': pokemon_data['type2'],
+
                     }
                 )
 

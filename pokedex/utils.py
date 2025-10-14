@@ -16,6 +16,7 @@ def fetch_pokemon_data(pokemon_id):
                 'image': data['sprites']['front_default'],
                 'type1': types[0] if len(types) > 0 else '',
                 'type2': types[1] if len(types) > 1 else '',
+                'shiny_image': data['sprites']['front_shiny'],
                 'stats': {
 
                 }
@@ -27,6 +28,6 @@ def fetch_pokemon_data(pokemon_id):
                 pokemon_info['stats'][stat_name] = stat_value
             return pokemon_info
         
-    except requests.RequestException as e:
+    except requests.RequestException:
         pass
     return None

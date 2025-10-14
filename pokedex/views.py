@@ -45,6 +45,7 @@ def pokemon_detail_view(request, pokemon_id):
         'id': pokemon_obj.pokedex_number,
             'name': pokemon_obj.name,
             'image': pokemon_obj.image_url,
+            'shiny_image': pokemon_obj.shiny_image_url,
             'height': pokemon_obj.height,
             'weight': pokemon_obj.weight,
             'type1': pokemon_obj.type1,
