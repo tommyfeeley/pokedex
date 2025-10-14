@@ -8,14 +8,14 @@ A retro Game Boy-styled web application built with Django that allows users to b
 
 ## Features
 
-- ** Search Functionality** - Search Pokemon by name or Pokedex number
-- ** Type Badges** - Color-coded type indicators (Fire, Water, Grass, etc.)
-- ** Detailed Stats** - View HP, Attack, Defense, Speed, and more with visual stat bars
-- ** Pokemon Cries** - Authentic Pokemon sound effects that play automatically
-- ** Shiny Toggle** - Switch between normal and shiny sprites on detail pages
-- ** Navigation** - Browse through Pokemon with Previous/Next buttons
-- ** Retro Design** - Authentic Game Boy green screen aesthetic with pixel font
-- ** Lightning Fast** - Database-backed for instant loading
+- Search Functionality - Search Pokemon by name or Pokedex number
+- Type Badges - Color-coded type indicators (Fire, Water, Grass, etc.)
+- Detailed Stats - View HP, Attack, Defense, Speed, and more with visual stat bars
+- Pokemon Cries - Authentic Pokemon sound effects that play automatically
+- Shiny Toggle - Switch between normal and shiny sprites on detail pages
+- Navigation - Browse through Pokemon with Previous/Next buttons
+- Retro Design - Authentic Game Boy green screen aesthetic with pixel font
+- Lightning Fast - Database-backed for instant loading
 
 ### Home Page - Pokemon Grid
 *Grid view showing all 151 Pokemon with search functionality*
