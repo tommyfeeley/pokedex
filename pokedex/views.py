@@ -5,8 +5,13 @@ from .models import Pokemon
 def home_view(request):
 
     search_query = request.GET.get('search', '').strip()
+    type_filter = request.GET.get('type', '').strip().lower()
 
     pokemon_queryset = Pokemon.objects.all()
+
+    if type_filter:
+        pokemon_queryset = pokemon_queryset.filter(Q(type1=type_filter) | Q(type2=type_filter))
+
 
     if search_query:
         if search_query.isdigit():
@@ -33,6 +38,7 @@ def home_view(request):
         'heading': 'Welcome to the Pokedex!',
         'pokemon_list': pokemon_list,
         'search_query': search_query,
+        'type_filter': type_filter,
     }
 
     return render(request, 'pokedex/home.html', context)
