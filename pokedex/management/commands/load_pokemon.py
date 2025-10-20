@@ -34,6 +34,7 @@ class Command(BaseCommand):
                         'special_attack': pokemon_data['stats'].get('special-attack', 0),
                         'special_defense': pokemon_data['stats'].get('special-defense', 0),
                         'speed': pokemon_data['stats'].get('speed', 0),
+                        'abilities': pokemon_data.get('abilities', ''),
 
                     }
                 )

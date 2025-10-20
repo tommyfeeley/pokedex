@@ -233,24 +233,61 @@
             box-shadow: 2px 2px 0px #0f380f;
         }
 
-        .type-normal { background-color: #A8A878; color: #000; }
-        .type-fire { background-color: #F08030; color: #fff; }
-        .type-water { background-color: #6890F0; color: #fff; }
-        .type-electric { background-color: #F8D030; color: #000; }
-        .type-grass { background-color: #78C850; color: #000; }
-        .type-ice { background-color: #98D8D8; color: #000; }
-        .type-fighting { background-color: #C03028; color: #fff; }
-        .type-poison { background-color: #A040A0; color: #fff; }
-        .type-ground { background-color: #E0C068; color: #000; }
-        .type-flying { background-color: #A890F0; color: #fff; }
-        .type-psychic { background-color: #F85888; color: #fff; }
-        .type-bug { background-color: #A8B820; color: #fff; }
-        .type-rock { background-color: #B8A038; color: #fff; }
-        .type-ghost { background-color: #705898; color: #fff; }
-        .type-dragon { background-color: #7038F8; color: #fff; }
-        .type-dark { background-color: #705848; color: #fff; }
-        .type-steel { background-color: #B8B8D0; color: #000; }
-        .type-fairy { background-color: #EE99AC; color: #000; }
+        .type-normal { 
+            background-color: #A8A878; color: #000; 
+        }
+        .type-fire { 
+            background-color: #F08030; color: #fff; 
+        }
+        .type-water { 
+            background-color: #6890F0; color: #fff; 
+        }
+        .type-electric { 
+            background-color: #F8D030; color: #000; 
+        }
+        .type-grass { 
+            background-color: #78C850; color: #000; 
+        }
+        .type-ice { 
+            background-color: #98D8D8; color: #000; 
+        }
+        .type-fighting { 
+            background-color: #C03028; color: #fff; 
+        }
+        .type-poison { 
+            background-color: #A040A0; color: #fff; 
+        }
+        .type-ground { 
+            background-color: #E0C068; color: #000; 
+        }
+        .type-flying { 
+            background-color: #A890F0; color: #fff; 
+        }
+        .type-psychic { 
+            background-color: #F85888; color: #fff; 
+        }
+
+        .type-bug { 
+            background-color: #A8B820; color: #fff; 
+        }
+        .type-rock { 
+            background-color: #B8A038; color: #fff; 
+        }
+        .type-ghost { 
+            background-color: #705898; color: #fff; 
+        }
+        .type-dragon { 
+            background-color: #7038F8; color: #fff; 
+        }
+        .type-dark { 
+            background-color: #705848; color: #fff; 
+        }
+        .type-steel { 
+            background-color: #B8B8D0; color: #000; 
+        }
+        .type-fairy { 
+            background-color: #EE99AC; color: #000;
+         }
 
         .filter-container {
             max-width: 900px;
@@ -299,6 +336,41 @@
             color: #9bbc0f;
             margin-bottom: 10px;
         }
+
+        .sort-container {
+            max-width: 600px;
+            margin: 0 auto 20px;
+            text-align: center;
+        }
+
+        .sort-label {
+            font-size: 10px;
+            color: #9bbc0f;
+            margin-bottom: 10px;
+        }
+
+        .sort-select {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #8bac0f;
+            border: 4px solid #306230;
+            padding: 12px;
+            color: #0f380f;
+            font-size: 10px;
+            box-shadow: 4px 4px 0px #0f380f;
+            cursor: pointer;
+            min-width: 250px;
+        }
+
+        .sort-select:focus {
+            outline: none;
+            background-color: #9bbc0f;
+        }
+
+        .sort-select option {
+            background-color: #8bac0f;
+            color: #0f380f;
+            padding: 10px;
+        }
     </style>
     
 </head>
@@ -317,7 +389,7 @@
             </form>
         </div>
 
-        <div class="filter-container">
+    <div class="filter-container">
     <div class="filter-label">FILTER BY TYPE</div>
     <div class="filter-buttons">
         <a href="?{% if search_query %}search={{ search_query }}{% endif %}" 
@@ -387,6 +459,27 @@
     </div>
 </div>
 
+    <div class="sort-container">
+        <div class="sort-label">SORT BY: </div>
+        <select class="sort-select" onchange="applySort(this.value)">
+            <option value="">Pokedex Number (Default)</option>
+            <option value="name" {% if sort_by == 'name' %}selected{% endif%}> Name (A-Z)</option>
+            <option value="-name" {% if sort_by == '-name' %}selected{% endif%}> Name (Z-A)</option>
+            <option value="-hp" {% if sort_by == '-hp' %}selected{% endif%}> HP (Highest)</option>
+            <option value="hp" {% if sort_by == 'hp' %}selected{% endif%}> HP (Lowest)</option>
+            <option value="-attack"{% if sort_by == '-attack'%}selected {% endif %}>Attack (Highest)</option>
+            <option value="attack"{% if sort_by == 'attack'%}selected {% endif %}>Attack (Lowest)</option>
+            <option value="-special_attack"{% if sort_by == '-special_attack'%}selected {% endif %}>Special Attack (Highest)</option>
+            <option value="special_attack"{% if sort_by == 'special_attack'%}selected {% endif %}>Special Attack (Lowest)</option>
+            <option value="-defense"{% if sort_by == '-defense'%}selected {% endif %}>Defense (Highest)</option>
+            <option value="defense"{% if sort_by == 'defense'%}selected {% endif %}>Defense (Lowest)</option>
+            <option value="-speed"{% if sort_by == '-speed'%}selected {% endif %}>Speed (Highest)</option>
+            <option value="speed"{% if sort_by == 'speed'%}selected {% endif %}>Speed (Lowest)</option>
+
+        </select>
+    </div>
+
+
         {% if pokemon_list %}
 
         <div class="pokemon-grid">
@@ -424,6 +517,18 @@
         function playCry(pokemonId, cardElement) {
             window.location.href = `/pokemon/${pokemonId}/`
             
+        }
+
+        function applySort(sortValue) {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            if (sortValue) {
+                urlParams.set('sort', sortValue);
+            } else {
+                urlParams.delete('sort');
+            }
+
+            window.location.search = urlParams.toString();
         }
     </script>
 </body>

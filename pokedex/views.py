@@ -6,6 +6,7 @@ def home_view(request):
 
     search_query = request.GET.get('search', '').strip()
     type_filter = request.GET.get('type', '').strip().lower()
+    sort_by = request.GET.get('sort', '').strip()
 
     pokemon_queryset = Pokemon.objects.all()
 
@@ -19,6 +20,29 @@ def home_view(request):
         else:
             pokemon_queryset = pokemon_queryset.filter(name__icontains=search_query)
 
+    if sort_by:
+        sort_mapping = {
+            'name': 'name',
+            '-name': '-name',
+            'hp': 'hp',
+            '-hp': '-hp',
+            'speed': 'speed',
+            '-speed': '-speed',
+            'attack': 'attack',
+            '-attack': '-attack',
+            'defense': 'defense',
+            '-defense': '-defense',
+            'special_attack': 'special_attack',
+            '-special_attack': '-special_attack',
+            'special_defense':'special_defense',
+            '-special_defense': '-special_defense',
+        }
+
+        if sort_by in sort_mapping:
+            pokemon_queryset = pokemon_queryset.order_by(sort_mapping[sort_by])
+    else:
+        pokemon_queryset = pokemon_queryset.order_by('pokedex_number')
+
     pokemon_list = []
 
     for pokemon in pokemon_queryset:
@@ -30,6 +54,11 @@ def home_view(request):
             'type2': pokemon.type2,
             'stats': {
                 'hp': pokemon.hp,
+                'speed': pokemon.speed,
+                'attack': pokemon.attack,
+                'defense': pokemon.defense,
+                'special_attack': pokemon.special_attack,
+                'special_defense': pokemon.special_defense,
             }
         })
 
@@ -39,6 +68,7 @@ def home_view(request):
         'pokemon_list': pokemon_list,
         'search_query': search_query,
         'type_filter': type_filter,
+        'sort_by': sort_by,
     }
 
     return render(request, 'pokedex/home.html', context)
@@ -56,13 +86,14 @@ def pokemon_detail_view(request, pokemon_id):
             'weight': pokemon_obj.weight,
             'type1': pokemon_obj.type1,
             'type2': pokemon_obj.type2,
+            'abilities': pokemon_obj.abilities,
             'stats': {
                 'hp': pokemon_obj.hp,
                 'attack': pokemon_obj.attack,
                 'defense': pokemon_obj.defense,
                 'speed': pokemon_obj.speed,
                 'special-attack': pokemon_obj.special_attack,
-                'special_defense': pokemon_obj.special_defense,
+                'special-defense': pokemon_obj.special_defense,
             }
     }
     prev_pokemon = None

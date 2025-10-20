@@ -8,6 +8,16 @@ def fetch_pokemon_data(pokemon_id):
 
             types = [t['type']['name'] for t in data['types']]
 
+            abilities = []
+
+            for ability in data['abilities']:
+                ability_name = ability['ability']['name'].replace('-',' ').title()
+
+                if ability['is_hidden']:
+                    abilities.append(f"{ability_name} (Hidden)")
+                else:
+                    abilities.append(ability_name)
+
             pokemon_info = {
                 'id': data['id'],
                 'name': data['name'],
@@ -17,6 +27,7 @@ def fetch_pokemon_data(pokemon_id):
                 'type1': types[0] if len(types) > 0 else '',
                 'type2': types[1] if len(types) > 1 else '',
                 'shiny_image': data['sprites']['front_shiny'],
+                'abilities': ', '.join(abilities),
                 'stats': {
 
                 }
