@@ -315,7 +315,7 @@
 
         .ability-name {
             color: #9bbc0f;
-            font-size: 10px;
+            font-size: 13px;
             margin-bottom: 5px;
         }
 
@@ -325,7 +325,7 @@
 
         .ability-description {
             color: #8bac0f;
-            font-size: 8px;
+            font-size: 10px;
             line-height: 1.4;
         }
 
@@ -385,6 +385,9 @@
                 data-normal="{{pokemon.image}}"data-shiny="{{pokemon.shiny_image}}" alt="{{pokemon.name}}" id="pokemon-image">
             </div>
 
+            <button class="shiny-toggle" onclick="toggleShiny()">✨ TOGGLE SHINY</button>
+            <button class="play-cry-button" onclick="playCry({{pokemon_id}})">♪ PLAY CRY</button>
+
             <div class="info-section">
                 <div class="info-title">▶ BASIC INFO</div>
                 <div class="info-row">
@@ -436,8 +439,6 @@
                 </div>
                 {% endfor %}
             </div>
-            <button class="shiny-toggle" onclick="toggleShiny()">✨ TOGGLE SHINY</button>
-            <button class="play-cry-button" onclick="playCry({{pokemon_id}})">♪ PLAY CRY</button>
 
         </div>
         {% else %}
