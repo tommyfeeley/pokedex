@@ -3,7 +3,6 @@ from pokedex.models import Pokemon
 from pokedex.utils import fetch_pokemon_data
 
 class Command(BaseCommand):
-    help = 'Loading all 151 Pokemon into database using PokeAPI'
 
     def handle(self, *args, **options): 
         self.stdout.write('Starting to load pokemon.')
@@ -34,7 +33,7 @@ class Command(BaseCommand):
                         'special_attack': pokemon_data['stats'].get('special-attack', 0),
                         'special_defense': pokemon_data['stats'].get('special-defense', 0),
                         'speed': pokemon_data['stats'].get('speed', 0),
-                        'abilities': pokemon_data.get('abilities', ''),
+                        'abilities': pokemon_data.get('abilities', []),
 
                     }
                 )

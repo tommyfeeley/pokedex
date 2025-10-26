@@ -300,6 +300,44 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.3; }
         }
+
+        .abilities-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .ability-card {
+            background-color: #306230;
+            border: 2px solid #0f380f;
+            padding: 10px;
+            margin-top: 5px;
+        }
+
+        .ability-name {
+            color: #9bbc0f;
+            font-size: 10px;
+            margin-bottom: 5px;
+        }
+
+        .ability-name.hidden {
+            color: #ffd700;
+        }
+
+        .ability-description {
+            color: #8bac0f;
+            font-size: 8px;
+            line-height: 1.4;
+        }
+
+        .hidden-badge {
+            display: inline-block;
+            background-color: #ffd700;
+            color: #0f380f;
+            padding: 2px 6px;
+            font-size: 7px;
+            margin-left: 5px;
+            border: 1px solid #0f380f;
+        }
     </style>
 </head>
 <body>
@@ -361,8 +399,23 @@
 
             <div class="info-section">
                 <div class="info-title"> ABILITIES </div>
-                <div class="info-row">
-                    <span class="info-value">{{pokemon.abilities}}</span>
+                <div class="abilities-grid">
+                    {% for ability in pokemon.abilities %}
+                        <div class="ability-card">
+                            <div class="ability-name {% if ability.is_hidden %}hidden{% endif %}">
+                                {{ ability.name }}
+                                {% if ability.is_hidden %}
+                                    <span class="hidden-bage">
+                                        HIDDEN
+                                    </span>
+                                    {% endif %} 
+                            </div>
+                            <div class="ability-description">
+                                {{ ability.description}}
+                            </div>
+                    
+                        </div>
+                        {% endfor %}
                 </div>
 
             </div>

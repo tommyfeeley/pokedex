@@ -13,7 +13,7 @@ class Pokemon(models.Model):
     type1 = models.CharField(max_length=20, blank=True)
     type2 = models.CharField(max_length=20, blank=True, null=True)
 
-    abilities = models.TextField(blank=True)
+    abilities = models.JSONField(default=list, blank=True)
 
     hp = models.IntegerField()
     attack = models.IntegerField()
