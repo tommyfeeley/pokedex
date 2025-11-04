@@ -16,6 +16,7 @@ A retro Game Boy-styled web application built with Django that allows users to b
 - Navigation - Browse through Pokemon with Previous/Next buttons
 - Retro Design - Authentic Game Boy green screen aesthetic with pixel font
 - Lightning Fast - Database-backed for instant loading
+- Team Builder - Add 6 Pokemon to your team, and check what types they are strong/weak against!
 
 ### Home Page - Pokemon Grid
 *Grid view showing all 151 Pokemon with search functionality*
