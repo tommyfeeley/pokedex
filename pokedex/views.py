@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from .models import Pokemon
+from .type_chart import ALL_TYPES, TYPE_WEAKNESSES, TYPE_RESISTANCES, TYPE_CHART
 
 def home_view(request):
 
@@ -114,3 +115,100 @@ def pokemon_detail_view(request, pokemon_id):
     }
 
     return render(request, 'pokedex/detail.html', context)
+
+def add_to_team(request, pokemon_id):
+    if 'team' not in request.session:
+        request.session['team'] = []
+    team = request.session['team']
+
+    if len(team) < 6 and pokemon_id not in team:
+        team.append(pokemon_id)
+        request.session['team'] = team
+        request.session.modified = True
+
+    return redirect('team_builder')
+
+def remove_from_team(request, pokemon_id):
+    if 'team' in request.session:
+        team = request.session['team']
+        if pokemon_id in team:
+            team.remove(pokemon_id)
+            request.session['team'] = team
+            request.session.modified = True
+    return redirect('team_builder')
+
+def team_builder_view(request): 
+    team_ids = request.session.get('team', [])
+    team_pokemon = []
+    team_types = []
+
+    for pokemon_id in team_ids:
+        try:
+            pokemon = Pokemon.objects.get(pokedex_number=pokemon_id)
+            team_pokemon.append({
+                'id': pokemon.pokedex_number,
+                'name': pokemon.name,
+                'image': pokemon.image_url,
+                'type1': pokemon.type1,
+                'type2': pokemon.type2,
+            })
+            team_types.append(pokemon.type1)
+            if pokemon.type2:
+                team_types.append(pokemon.type2)
+        except Pokemon.DoesNotExist:
+            pass
+    
+    coverage = analyze_type_coverage(team_types)
+
+    all_pokemon = []
+    for pokemon in Pokemon.objects.all():
+        all_pokemon.append({
+                'id': pokemon.pokedex_number,
+                'name': pokemon.name,
+                'image': pokemon.image_url,
+                'type1': pokemon.type1,
+                'type2': pokemon.type2,
+                'in_team': pokemon.pokedex_number in team_ids,
+            })
+        
+    context = {
+        'page_title': 'Team Builder', 
+        'team_pokemon': team_pokemon,
+        'team_size': len(team_pokemon),
+        'all_pokemon': all_pokemon,
+        'coverage': coverage
+    }
+
+    return render(request, 'pokedex/team_builder.html', context)
+
+def analyze_type_coverage(team_types):
+
+    offensive_coverage = {}
+    defensive_weaknesses = {}
+    defensive_resistances = {}
+
+    for attack_type in ALL_TYPES:
+
+        resist_count = 0
+        weak_count = 0
+
+        for team_type in set(team_types):
+            if attack_type in TYPE_RESISTANCES.get(team_type, []):
+                resist_count += 1
+            if attack_type in TYPE_WEAKNESSES.get(team_type, []):
+                weak_count += 1
+        if weak_count > 0:
+            defensive_weaknesses[attack_type] = weak_count
+        if resist_count > 0:
+            defensive_resistances[attack_type] = resist_count
+    
+    for team_type in set(team_types):
+        super_effective_against = TYPE_CHART.get(team_type, {}).get('super_effective', [])
+        for target_type in super_effective_against:
+            offensive_coverage[target_type] = offensive_coverage.get(target_type, 0) + 1
+
+    
+    return {
+        'offensive': offensive_coverage, 'weaknesses': defensive_weaknesses, 'resistances': defensive_resistances,
+    }
+

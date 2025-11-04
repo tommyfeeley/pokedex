@@ -379,6 +379,12 @@
     <div class="container">
         <h1>◆ POKEDEX ◆</h1>
 
+        <div style="text-align: center; margin: 20px;">
+            <a href="{% url 'team_builder' %}" class="search-button" style="text-decoration: none; display: inline-block;">
+                TEAM BUILDER
+            </a>
+        </div>
+
         <div class="search-container">
             <form method="GET" action="{% url 'home' %}">
                 <input type="text" name="search" placeholder="SEARCH" value=" {{search_query}}" class="search-input">

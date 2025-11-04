@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{page_title}}</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #0f380f;
+            background-image: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px, 
+                transparent 1px, 
+                transparent 2px
+            );
+            margin: 0;
+            padding: 20px;
+            color: #9bbc0f;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            text-shadow: 3px 3px 0px #0f380f;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            font-size: 16px;
+            color: #0f380f;
+            margin: 20px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #306230;
+        }
+        
+        .back-button {
+            font-size: 10px;
+            display: inline-block;
+            background-color: #8bac0f;
+            border: 4px solid #306230;
+            padding: 10px 20px;
+            color: #0f380f;
+            text-decoration: none;
+            margin-bottom: 20px;
+            box-shadow: 4px 4px 0px #0f380f;
+        }
+        
+        .back-button:hover {
+            background-color: #9bbc0f;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #0f380f;
+        }
+        
+        .team-section {
+            background-color: #8bac0f;
+            border: 4px solid #306230;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 4px 4px 0px #0f380f;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .team-slot {
+            background-color: #306230;
+            border: 4px solid #0f380f;
+            padding: 15px;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .team-slot.empty {
+            background-color: #0f380f;
+            border: 4px dashed #306230;
+        }
+        
+        .team-slot img {
+            width: 96px;
+            height: 96px;
+            image-rendering: pixelated;
+            margin-bottom: 10px;
+        }
+        
+        .team-slot .name {
+            font-size: 10px;
+            color: #9bbc0f;
+            margin: 5px 0;
+        }
+        
+        .remove-button {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #C03028;
+            border: 2px solid #0f380f;
+            padding: 5px 10px;
+            color: #fff;
+            font-size: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .remove-button:hover {
+            background-color: #ff0000;
+        }
+        
+        .coverage-section {
+            background-color: #8bac0f;
+            border: 4px solid #306230;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 4px 4px 0px #0f380f;
+        }
+        
+        .coverage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .type-coverage-card {
+            background-color: #306230;
+            border: 3px solid #0f380f;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .type-coverage-card.weakness {
+            border-color: #ff0000;
+            background-color: #C03028;
+        }
+        
+        .type-coverage-card.resistance {
+            border-color: #00ff00;
+            background-color: #78C850;
+        }
+        
+        .type-coverage-card.strength {
+            border-color: #ffd700;
+            background-color: #F8D030;
+        }
+        
+        .type-name {
+            font-size: 10px;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        
+        .coverage-count {
+            font-size: 8px;
+            color: #fff;
+        }
+        
+        .pokemon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        
+        .pokemon-card {
+            background-color: #8bac0f;
+            border: 4px solid #306230;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.1s;
+            box-shadow: 4px 4px 0px #0f380f;
+            position: relative;
+        }
+        
+        .pokemon-card:hover {
+            background-color: #9bbc0f;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #0f380f;
+        }
+        
+        .pokemon-card.in-team {
+            background-color: #306230;
+            opacity: 0.6;
+        }
+        
+        .pokemon-card.in-team::after {
+            content: "✓ IN TEAM";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ffd700;
+            color: #0f380f;
+            padding: 3px 6px;
+            font-size: 7px;
+        }
+        
+        .pokemon-number {
+            font-size: 10px;
+            color: #0f380f;
+            margin-bottom: 5px;
+        }
+        
+        .pokemon-name {
+            font-size: 11px;
+            color: #0f380f;
+            margin: 10px 0;
+        }
+        
+        .pokemon-image {
+            width: 96px;
+            height: 96px;
+            image-rendering: pixelated;
+        }
+        
+        .type-badges {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin-top: 8px;
+        }
+        
+        .type-badge {
+            font-size: 8px;
+            padding: 4px 8px;
+            border: 2px solid #0f380f;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        
+        .type-normal { background-color: #A8A878; color: #000; }
+        .type-fire { background-color: #F08030; color: #fff; }
+        .type-water { background-color: #6890F0; color: #fff; }
+        .type-electric { background-color: #F8D030; color: #000; }
+        .type-grass { background-color: #78C850; color: #000; }
+        .type-ice { background-color: #98D8D8; color: #000; }
+        .type-fighting { background-color: #C03028; color: #fff; }
+        .type-poison { background-color: #A040A0; color: #fff; }
+        .type-ground { background-color: #E0C068; color: #000; }
+        .type-flying { background-color: #A890F0; color: #fff; }
+        .type-psychic { background-color: #F85888; color: #fff; }
+        .type-bug { background-color: #A8B820; color: #fff; }
+        .type-rock { background-color: #B8A038; color: #fff; }
+        .type-ghost { background-color: #705898; color: #fff; }
+        .type-dragon { background-color: #7038F8; color: #fff; }
+        .type-dark { background-color: #705848; color: #fff; }
+        .type-steel { background-color: #B8B8D0; color: #000; }
+        .type-fairy { background-color: #EE99AC; color: #000; }
+        
+        .empty-state {
+            text-align: center;
+            color: #306230;
+            font-size: 10px;
+            padding: 20px;
+        }
+        
+        .container::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0,0,0,0.15),
+                rgba(0,0,0,0.15) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'home' %}" class="back-button">BACK TO POKEDEX</a>
+
+        <h1>TEAM BUILDER</h1>
+
+        <div class="team-section">
+            <h2>YOUR TEAM ({{ team_size }}/6)</h2>
+            <div class="team-grid">
+                {% for pokemon in team_pokemon %}
+                <div class="team-slot">
+                    <img src="{{pokemon.image}}" alt="{{pokemon.name}}">
+                    <div class="name">{{pokemon.name|upper}}</div>
+                    <div class="type-badges">
+                        <span class="type-badge type-{{pokemon.type1}}">{{pokemon.type1}}</span>
+                        {% if pokemon.type2 %}
+                        <span class="type-badge type-{{pokemon.type2}}">{{pokemon.type2}}</span>
+                        {% endif %}
+                    </div>
+                    <a href="{% url 'remove_from_team' pokemon.id %}" class="remove-button">REMOVE</a>
+                </div>
+                {% endfor %}
+
+                {% for i in "123456"|slice:team_size %}
+                <div class="team-slot empty">
+                    <div class="empty-state">EMPTY SLOT</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if team_size > 0 %}
+        <div class="coverage-section">
+            <h2>TYPE COVERAGE ANALYSIS</h2>
+            {% if coverage.weaknesses %}
+            <h3 style="font-size: 12px; color: #ff6b6b; margin-top: 15px;">WEAKNESSES (Vulnerable to)</h3>
+            <div class="coverage-grid">
+                {% for type, count in coverage.weaknesses.items %}
+                <div class="type-coverage-card weakness">
+                    <div class="type-name">{{type|upper}}</div>
+                    <div class="coverage-count">{{count}}x weak</div>
+                    
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if coverage.resistances %}
+            <h3 style="font-size: 12px; color: #78C850; margin-top: 15px;">RESISTANCES (Get attacked not very effectively)</h3>
+            <div class="coverage-grid">
+                {% for type, count in coverage.resistances.items %}
+                <div class="type-coverage-card resistance">
+                    <div class="type-name">{{type|upper}}</div>
+                    <div class="coverage-count">{{count}}x resist</div>
+                    
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if coverage.offensive %}
+            <h3 style="font-size: 12px; color: #F8D030; margin-top: 15px;">OFFENSIVE COVERAGE (Can attack super effectively)</h3>
+            <div class="coverage-grid">
+                {% for type, count in coverage.offensive.items %}
+                <div class="type-coverage-card strength">
+                    <div class="type-name">{{type|upper}}</div>
+                    <div class="coverage-count">{{count}}x coverage</div>
+                    
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>
+        {% endif %}
+
+        <div class="team-section">
+            <h2>SELECT POKEMON (click to add to team)</h2>
+            <div class="pokemon-grid">
+                {% for pokemon in all_pokemon %}
+                <div class="pokemon-card {% if pokemon.in_team %}in-team{% endif %}"
+                 onclick="addToTeam({{ pokemon.id }}, {{ pokemon.in_team|yesno:'true,false' }}, {{ team_size }})">
+                 <div class="pokemon-number">No. {{pokemon.id|stringformat:"03d"}}</div>
+                 <img src="{{pokemon.image}}" alt="{{pokemon.name}}" class="pokemon-image">
+                 <div class="pokemon-name">{{pokemon.name|upper}}</div>
+                 <div class="type-badges">
+                    <span class="type-badge type-{{pokemon.type1}}">{{pokemon.type1}}</span>
+                    {% if pokemon.type2 %}
+                    <span class="type-badge type-{{pokemon.type2}}">{{pokemon.type2}}</span>
+                    {% endif %}
+                 </div>
+
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        function addToTeam(pokemonId, inTeam, teamSize) {
+            if (inTeam || teamSize >= 6) {
+                return;
+            }
+
+            window.location.href = `/team/add/${pokemonId}/`;
+        }
+    </script>
+</body>
+</html>
